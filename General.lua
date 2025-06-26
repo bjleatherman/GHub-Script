@@ -13,6 +13,7 @@ color_settings_count = 6
 move_delay = 100
 click_delay = 10
 user_input_delay = 600
+menu_delay = 100
 
 ---------------------------
 -- x, y target locations --
@@ -97,7 +98,8 @@ function OnEvent(event,arg)
   if(event == "MOUSE_BUTTON_PRESSED" and arg == 9 and gshift_state == 1) then
     --DragAcrossPrimary()
     --ShiftGW()
-    HandleColorChangeViaVirtualWheel()
+    --HandleColorChangeViaVirtualWheel()
+    TempGroup()
   end
   
   if(event == "MOUSE_BUTTON_PRESSED" and arg == 10 and gshift_state == 1) then
@@ -163,13 +165,13 @@ function ShiftGW()
   -- move mouse so that it can click the correct menu item
   MoveMouseTo(pos2_x,pos2_y)
   ClickHandler(1, false, false)
-  Sleep(100)
+  Sleep(menu_delay)
   
   --move mouse to target location
   --MoveMouseTo(pos3_x,pos3_y)
   MoveMouseTo(new_x,new_y)
   ClickHandler(1, false, false)
-  Sleep(100)
+  Sleep(menu_delay)
   
   --move mouse back to home position
   --MoveMouseTo(pos0_x,pos0_y)
@@ -204,12 +206,18 @@ function TempGroup()
   ClickHandler(3, false, false)
   
   -- Wait for menu
-  Sleep(100)
+  Sleep(menu_delay)
   
   -- Move and click 2
   MoveMouseTo(temp_group_2_x ,temp_group_2_y)
   ClickHandler(1, false, false)
   MoveMouseTo(new_x, new_y)
+  
+  -- Wait for temp group to calc. then press
+  -- escape to dismiss msg box
+  Sleep(menu_delay * 15)
+  PressKey(0x01)
+  
 end
 
 function ToggleColorSettings()
